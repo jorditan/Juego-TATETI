@@ -9,33 +9,34 @@ Array.from(document.getElementsByTagName("button"))
 botones.forEach(x => x.addEventListener("click", ponerFicha));
 
 function ponerFicha(event) {
-    let botonPulsado = event.target;
-    if(!partidaFinalizada && botonPulsado.innerHTML == ""){
-        botonPulsado.innerHTML = fichasPosibles[turno];
-        fichasPuestas += 1;
-    }
+        let botonPulsado = event.target;
+        if(!partidaFinalizada && botonPulsado.innerHTML == ""){
+            botonPulsado.innerHTML = fichasPosibles[turno];
+            fichasPuestas += 1;
+        
 
-    let estadoPartida = estado();
-    if (estadoPartida == 0) {
-        cambiarTurno();
-        if (fichasPuestas > 9) {
-        ia();
-        estadoPartida = estado();
-        puestas += 1;
-        cambiarTurno(); 
+        let estadoPartida = estado();
+        if (estadoPartida == 0) {
+            cambiarTurno();
+            if (fichasPuestas < 9) {
+            ia();
+            estadoPartida = estado();
+            puestas += 1;
+            cambiarTurno(); 
+            }
         }
-    }
 
-    if(estadoPartida == 1){
-        textoVictoria.innerHTML = "Ganaste ;)"
-        textoVictoria.style.visibility = "visible";
-        partidaAcabada = true;
+        if(estadoPartida == 1){
+            textoVictoria.innerHTML = "Ganaste ;)"
+            textoVictoria.style.visibility = "visible";
+            partidaAcabada = true;
+        }
+        else if(estadoPartida == -1){
+            textoVictoria.innerHTML = "Has perdido ;("
+            partidaAcabada = true;
+            textoVictoria.style.visibility = "visible";
+        }	
     }
-    else if(estadoPartida == -1){
-        textoVictoria.innerHTML = "Has perdido ;("
-        partidaAcabada = true;
-        textoVictoria.style.visibility = "visible";
-    }	
 }
 
 function cambiarTurno() {
@@ -90,14 +91,15 @@ if (sonIguales(botones[2], botones[4], botones [6])) {
     posicionVictoria = 8;
 }
 
-if (posicionVictoria > 0) {
-    if (turno == 1) {
-        nEstado = 1;
+    if (posicionVictoria > 0) {
+        if (turno == 1) {
+            nEstado = 1;
+        }
+        else {
+            nEstado= -1;
+        }  
     }
-    else {
-        nEstado= -1;
-    }  
-    }
+        
     return nEstado;
 
 }
